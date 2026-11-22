@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sticky Glass Navbar</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Poppins", system-ui, sans-serif;
+      font-size: 18px;
+      color: #e8eaf6;
+      background: #0b0d17;
+    }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 6%;
+      background: rgba(11, 13, 23, .55);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      transition: padding .3s;
+    }
+    .nav.small { padding: 10px 6%; }
+    .logo { font-weight: 800; font-size: 24px; color: #ff78be; }
+    .links a {
+      position: relative;
+      margin-left: 30px;
+      color: #c9cde8;
+      text-decoration: none;
+    }
+    .links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 3px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #ff78be, #78dcff);
+      transition: width .3s;
+    }
+    .links a:hover::after { width: 100%; }
+    section { min-height: 90vh; display: grid; place-items: center; font-size: 54px; font-weight: 800; }
+    .s1 { background: linear-gradient(135deg, #6d28d9, #ff78be); }
+    .s2 { background: linear-gradient(135deg, #0ea5e9, #6366f1); }
+    .s3 { background: linear-gradient(135deg, #f97316, #ff78be); }
+    .s4 { background: linear-gradient(135deg, #10b981, #0ea5e9); }
+  </style>
+</head>
+<body>
+  <header class="nav" id="nav">
+    <span class="logo">alex.dev</span>
+    <nav class="links">
+      <a href="#a">Home</a>
+      <a href="#b">Work</a>
+      <a href="#c">About</a>
+      <a href="#d">Contact</a>
+    </nav>
+  </header>
+
+  <section class="s1" id="a">Home</section>
+  <section class="s2" id="b">Work</section>
+  <section class="s3" id="c">About</section>
+  <section class="s4" id="d">Contact</section>
+
+  <script>
+    const nav = document.getElementById("nav");
+    // shrink the navbar a little after scrolling
+    window.onscroll = () => {
+      nav.classList.toggle("small", window.scrollY > 60);
+    };
+  </script>
+</body>
+</html>

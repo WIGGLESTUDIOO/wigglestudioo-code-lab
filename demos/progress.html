@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scroll Progress</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100vh;
+  font-family: "Poppins", system-ui, sans-serif;
+  color: #e8eaf6;
+  background: radial-gradient(circle at 50% 0%, #2d1757, #0b0d17 65%);
+  
+}
+
+#bar { position: fixed; top: 0; left: 0; height: 8px; width: 0; z-index: 9; background: linear-gradient(90deg, #ff78be, #78dcff); box-shadow: 0 0 14px #ff78be; }
+.top { position: fixed; top: 8px; left: 0; right: 0; padding: 18px 40px; font-weight: 600; background: rgba(11,13,23,.7); backdrop-filter: blur(10px); }
+main { padding: 120px 60px 160px; max-width: 900px; margin: auto; }
+h2 { font-size: 40px; margin: 70px 0 16px; color: #78dcff; }
+p { font-size: 21px; line-height: 1.7; color: #b9bddb; }
+
+</style>
+</head>
+<body>
+<div id="bar"></div><div class="top">Reading progress</div><main><h2>Why it works</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p><h2>The magic line</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p><h2>Make it yours</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p><h2>Smooth and simple</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p><h2>Keep scrolling</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p><h2>Almost there</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p><h2>The end</h2><p>Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. Scroll to see the bar grow. Every line you read fills it a little more. </p></main>
+<script>
+const bar = document.getElementById("bar");
+window.onscroll = () => {
+  const h = document.body.scrollHeight - innerHeight;
+  bar.style.width = scrollY / h * 100 + "%";
+};
+</script>
+</body>
+</html>

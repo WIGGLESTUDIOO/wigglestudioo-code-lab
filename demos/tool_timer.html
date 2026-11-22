@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Study Timer</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+.note{margin:0;font-size:13px;font-weight:700;opacity:.75}
+button{font:inherit;font-weight:700;color:#fff;background:#ff8fb1;border:none;border-radius:20px;padding:9px 22px;cursor:pointer;box-shadow:0 6px 14px rgba(255,143,177,.45)}
+button.ghost{background:#fff;color:#e0668f;box-shadow:0 0 0 2px #ffc2d4 inset}
+h2{margin:0;font-size:30px}
+.ring{position:relative;width:230px;height:230px}
+.ring svg{transform:rotate(-90deg)}
+.track,.arc{fill:none;stroke-width:16}
+.track{stroke:#ffd6e3}
+.arc{stroke:#ff7fa3;stroke-linecap:round;stroke-dasharray:628.3;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear}
+.mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+#label{font-size:22px}#time{font-size:48px;font-weight:700;letter-spacing:1px}
+.row{display:flex;gap:12px}
+</style></head><body><div id="stage"><div class="ring">
+ <svg width="230" height="230" viewBox="0 0 230 230"><circle class="track" cx="115" cy="115" r="100"/><circle id="arc" class="arc" cx="115" cy="115" r="100"/></svg>
+ <div class="mid"><div id="label" class="pacifico">Study time</div><div id="time">25:00</div></div>
+</div>
+<div class="row"><button id="go">start</button><button id="rst" class="ghost">reset</button></div></div><script>const LABEL="Maths time", MINUTES=Number("1");
+document.getElementById("label").textContent=LABEL;
+const arc=document.getElementById("arc"),time=document.getElementById("time"),go=document.getElementById("go"),rst=document.getElementById("rst");
+const TOTAL=MINUTES*60;let left=TOTAL,timer=null;
+function draw(){
+  const m=Math.floor(left/60),s=Math.floor(left%60);
+  time.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  arc.style.strokeDashoffset=628.3*(1-left/TOTAL);
+}
+go.onclick=()=>{
+  if(timer){clearInterval(timer);timer=null;go.textContent="start";return}
+  go.textContent="pause";
+  timer=setInterval(()=>{
+    left=Math.max(0,left-1);draw();
+    if(left==0){clearInterval(timer);timer=null;go.textContent="start";time.textContent="done!"}
+  },1000);
+};
+rst.onclick=()=>{clearInterval(timer);timer=null;left=TOTAL;go.textContent="start";draw()};
+draw();
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>

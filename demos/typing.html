@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Typing Effect</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  min-height: 100vh;
+  font-family: "Poppins", system-ui, sans-serif;
+  color: #e8eaf6;
+  background: radial-gradient(circle at 50% 0%, #2d1757, #0b0d17 65%);
+  display: grid; place-items: center;
+}
+
+.box { text-align: center; }
+.hi { color: #8b90b0; font-size: 36px; margin-bottom: 10px; }
+h1 { font-size: 100px; }
+#t { color: #ff78be; }
+.cur { display: inline-block; width: 7px; height: 96px; margin-left: 8px; vertical-align: -12px; background: #78dcff; animation: blink .8s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+</style>
+</head>
+<body>
+<div class="box"><p class="hi">Hi, I'm Rhea</p><h1>I'm a <span id="t"></span><i class="cur"></i></h1></div>
+<script>
+const t = document.getElementById("t");
+const w = ["Coder", "Designer", "Creator"];
+let i = 0, j = 0, del = false;
+setInterval(() => {
+  const s = w[i];
+  j += del ? -1 : 1;
+  t.textContent = s.slice(0, j);
+  if (j == s.length) del = true;
+  if (j == 0) { del = false; i = (i + 1) % w.length; }
+}, 130);
+</script>
+</body>
+</html>

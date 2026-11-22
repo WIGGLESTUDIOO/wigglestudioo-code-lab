@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Scratch Card</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+.wrap{position:relative;width:300px;height:200px;border-radius:20px;overflow:hidden;box-shadow:0 14px 30px rgba(255,143,177,.35),0 0 0 6px #fff}
+.prize{position:absolute;inset:0;background:linear-gradient(160deg,#fffaf5,#ffe3ec);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;font-size:16px;line-height:1.45}
+.prize h2{margin:0;font-size:28px}.prize p{margin:0}
+canvas{position:absolute;inset:0;cursor:crosshair;touch-action:none;transition:opacity .8s}
+.tap{margin:0;font-size:13px;opacity:.7}
+</style></head><body><div id="stage"><div class="wrap">
+ <div class="prize"><h2 id="to" class="pacifico">You are loved</h2><p id="msg">A secret message</p></div>
+ <canvas id="c" width="300" height="200"></canvas>
+</div>
+<p class="tap">scratch with your finger</p></div><script>const NAME="You are loved", MSG="Surprise! Dinner is on me tonight.";
+document.getElementById("to").textContent=NAME;
+document.getElementById("msg").textContent=MSG;
+const c=document.getElementById("c"),x=c.getContext("2d");
+let g=x.createLinearGradient(0,0,300,200);g.addColorStop(0,"#ff9fbb");g.addColorStop(1,"#ffc2d4");
+x.fillStyle=g;x.fillRect(0,0,300,200);
+x.fillStyle="rgba(255,255,255,.55)";x.font="22px serif";
+for(let i=0;i<7;i++)for(let j=0;j<5;j++)x.fillText("♥",14+i*44+(j%2)*18,34+j*40);
+x.fillStyle="#fff";x.font="700 26px Quicksand,sans-serif";x.textAlign="center";x.fillText("scratch me",150,108);
+let down=false,n=0;
+c.onmousedown=()=>down=true;window.onmouseup=()=>down=false;
+c.ontouchstart=()=>down=true;c.ontouchend=()=>down=false;
+function scratch(e){
+  if(!down)return;const r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;
+  const k=300/r.width;
+  x.globalCompositeOperation="destination-out";x.beginPath();x.arc((p.clientX-r.left)*k,(p.clientY-r.top)*k,22,0,7);x.fill();
+  if(++n%10==0){const d=x.getImageData(0,0,300,200).data;let t=0;for(let i=3;i<d.length;i+=64)if(d[i]<20)t++;
+    if(t/(d.length/64)>.5){c.style.opacity=0;}}
+}
+c.onmousemove=scratch;c.ontouchmove=e=>{e.preventDefault();scratch(e)};
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>

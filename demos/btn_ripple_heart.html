@@ -1,0 +1,44 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ripple & Heart</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+#stage{--main:#ff8fb1;--dk:color-mix(in srgb,var(--main) 72%,#5a2a40)}
+.note{margin:0;font-size:15px;font-weight:700;opacity:.7}
+.cell{display:flex;flex-direction:column;align-items:center;gap:14px}
+.btn{font:inherit;font-weight:700;font-size:26px;color:#fff;background:var(--main);border:none;border-radius:24px;padding:0 48px;height:76px;min-width:330px;cursor:pointer;position:relative}
+#stage{gap:44px}
+.rip{overflow:hidden;box-shadow:0 8px 18px rgba(255,143,177,.4)}
+.rip .r{position:absolute;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.65);transform:translate(-50%,-50%) scale(0);animation:rp .7s ease-out forwards;pointer-events:none}
+@keyframes rp{to{transform:translate(-50%,-50%) scale(16);opacity:0}}
+.like{background:#fff;color:var(--main);box-shadow:0 0 0 3px var(--main) inset;transition:background .25s,color .25s}
+.like.on{background:var(--main);color:#fff}
+.mini{position:absolute;left:50%;top:50%;color:var(--main);pointer-events:none;animation:fly 1.2s ease-out forwards}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(var(--r));opacity:0}}
+</style></head><body><div id="stage"><div class="cell"><button class="btn rip" id="lab">click me</button><p class="note">7 · ripple click</p></div>
+<div class="cell"><button class="btn like" id="like">♡ like</button><p class="note">8 · heart burst</p></div></div><script>const COLOR="#ff9fcf", LABEL="Click me!";
+document.getElementById("stage").style.setProperty("--main",COLOR);
+document.getElementById("lab").textContent=LABEL;
+const rip=document.querySelector(".rip");
+rip.onclick=e=>{
+  const r=document.createElement("span");r.className="r";
+  r.style.left=e.offsetX+"px";r.style.top=e.offsetY+"px";
+  rip.appendChild(r);setTimeout(()=>r.remove(),750);
+};
+const like=document.getElementById("like");
+like.onclick=()=>{
+  const on=like.classList.toggle("on");
+  like.textContent=on?"♥ liked":"♡ like";
+  if(!on)return;
+  for(let i=0;i<8;i++){
+    const m=document.createElement("div");m.className="mini";m.textContent="♥";
+    const a=Math.random()*6.28,d=60+Math.random()*70;
+    m.style.setProperty("--dx",Math.cos(a)*d+"px");m.style.setProperty("--dy",Math.sin(a)*d+"px");
+    m.style.setProperty("--r",(Math.random()*120-60)+"deg");m.style.fontSize=(14+Math.random()*16)+"px";
+    like.appendChild(m);setTimeout(()=>m.remove(),1300);
+  }
+};
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>
