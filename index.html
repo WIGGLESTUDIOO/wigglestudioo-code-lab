@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WiggleStudioo Code Lab</title>
+  <meta name="description" content="Free copy-paste HTML, CSS and JavaScript code from the WiggleStudioo videos.">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="sky" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><div class="stars"></div></div>
+  <div id="floaters" aria-hidden="true"></div>
+
+  <div class="page">
+  <header class="top">
+    <a class="brand" href="#">WiggleStudioo <span>Code Lab</span> <b class="beat">♥</b></a>
+    <a class="yt" id="ytTop" target="_blank" rel="noopener">Watch on YouTube</a>
+  </header>
+
+  <section class="hero">
+    <div class="mascot">
+      <div class="bubble">welcome! take your time 💗</div>
+      <svg viewBox="0 0 120 112" width="120" height="112" role="img" aria-label="A smiling blob mascot">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc4e4"/><stop offset="1" stop-color="#c9b6ff"/></linearGradient></defs>
+        <path d="M60 10C96 10 113 40 109 69C105 97 81 106 60 106C39 106 15 97 11 69C7 40 24 10 60 10Z" fill="url(#g)"/>
+        <path d="M60 2c-4-6-14-2-10 5 2 4 10 8 10 8s8-4 10-8c4-7-6-11-10-5z" fill="#ff8fc7" transform="translate(0 4) scale(.9) translate(6 0)"/>
+        <ellipse class="eye" cx="44" cy="62" rx="4.5" ry="6.5" fill="#3a2250"/><ellipse class="eye" cx="76" cy="62" rx="4.5" ry="6.5" fill="#3a2250"/>
+        <ellipse cx="31" cy="76" rx="8" ry="5" fill="#ff8fc7" opacity=".55"/><ellipse cx="89" cy="76" rx="8" ry="5" fill="#ff8fc7" opacity=".55"/>
+        <path d="M52 77q8 8 16 0" fill="none" stroke="#3a2250" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <p class="kicker">free code from my videos</p>
+    <h1>Copy it. Paste it.<br><em>Make it yours.</em></h1>
+    <p class="lead">Every little thing I build on the channel lives here, with a live demo and one-click copy. No signup, no rush. Just cozy coding. 🌷</p>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <main>
+    <div id="groups"></div>
+    <section class="about">
+      <img src="img/rhea.jpg" alt="Rhea">
+      <div>
+        <h2>Hi, I'm Rhea <span>💗</span></h2>
+        <p>I make clean, beginner-friendly coding videos, and every piece of code from them lives here for free. Copy it, change it, and build something you're proud of!</p>
+        <a class="btn main" id="ytAbout" target="_blank" rel="noopener">See my videos</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="calm">Take a deep breath. You're doing amazing. 🌙</p>
+    <p>Made with <b class="beat">♥</b> by WiggleStudioo. New code every week.</p>
+    <a id="ytBottom" target="_blank" rel="noopener">Subscribe on YouTube</a>
+  </footer>
+  </div>
+  <div class="toast" id="toast">Copied! You're doing great 💗</div>
+  <script src="data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
