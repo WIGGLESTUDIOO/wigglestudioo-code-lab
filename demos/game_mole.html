@@ -1,0 +1,45 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WiggleStudioo - Whack-a-Mole</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+.note{margin:0;font-size:13px;font-weight:700;opacity:.75}
+button{font:inherit;font-weight:700;color:#fff;background:#ff8fb1;border:none;border-radius:20px;padding:9px 22px;cursor:pointer;box-shadow:0 6px 14px rgba(255,143,177,.45)}
+button.ghost{background:#fff;color:#e0668f;box-shadow:0 0 0 2px #ffc2d4 inset}
+h2{margin:0;font-size:30px}
+#field{display:grid;grid-template-columns:repeat(3,110px);gap:12px}
+.hole{height:92px;border-radius:50% 50% 18px 18px;background:#e9c9b8;box-shadow:inset 0 -10px 0 #d9ae98;overflow:hidden;position:relative;cursor:pointer}
+.mole{position:absolute;left:18%;right:18%;bottom:-100%;height:80%;border-radius:50% 50% 30% 30%;background:#c98f6b;transition:bottom .15s;color:#3a2250;font-weight:700;padding-top:14px}
+.mole::before{content:"• •";letter-spacing:10px;font-size:22px}
+.hole.up .mole{bottom:0}
+.hole.hit .mole{background:#ff9eb8}
+</style></head><body><div id="stage"><h2 class="pacifico">Whack-a-Mole</h2>
+<p class="note">score: <b id="score">0</b> · time: <b id="time">10</b></p>
+<div id="field">
+<div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div><div class="hole"><div class="mole"></div></div>
+</div>
+<button id="go">start</button></div><script>const TIME=15, SPEED=650;
+const holes=[...document.querySelectorAll(".hole")],scoreEl=document.getElementById("score"),timeEl=document.getElementById("time"),go=document.getElementById("go");
+let score=0,left=TIME,loop=null,clock=null;
+timeEl.textContent=TIME;
+function pop(){
+  holes.forEach(h=>h.classList.remove("up","hit"));
+  holes[Math.floor(Math.random()*holes.length)].classList.add("up");
+}
+holes.forEach(h=>h.onclick=()=>{
+  if(!loop||!h.classList.contains("up")||h.classList.contains("hit"))return;
+  h.classList.add("hit");scoreEl.textContent=++score;
+});
+go.onclick=()=>{
+  if(loop)return;
+  score=0;left=TIME;scoreEl.textContent=0;timeEl.textContent=left;go.textContent="playing...";
+  loop=setInterval(pop,SPEED);
+  clock=setInterval(()=>{
+    timeEl.textContent=--left;
+    if(left<=0){clearInterval(loop);clearInterval(clock);loop=null;holes.forEach(h=>h.classList.remove("up","hit"));go.textContent="play again"}
+  },1000);
+};
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>

@@ -1,0 +1,40 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WiggleStudioo - Guess the Number</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+.note{margin:0;font-size:13px;font-weight:700;opacity:.75}
+button{font:inherit;font-weight:700;color:#fff;background:#ff8fb1;border:none;border-radius:20px;padding:9px 22px;cursor:pointer;box-shadow:0 6px 14px rgba(255,143,177,.45)}
+button.ghost{background:#fff;color:#e0668f;box-shadow:0 0 0 2px #ffc2d4 inset}
+h2{margin:0;font-size:30px}
+#msg{font-size:18px;opacity:1;min-height:44px;display:flex;align-items:center;max-width:380px}
+.row{display:flex;gap:10px;align-items:center}
+input{width:120px;padding:12px;border:3px solid #ffd6e3;border-radius:14px;font:inherit;font-size:24px;font-weight:700;text-align:center;color:#7a3b52;outline:none;background:#fff}
+input:focus{border-color:#ff7fa3}
+</style></head><body><div id="stage"><h2 class="pacifico">Guess the Number</h2>
+<p id="msg" class="note">I'm thinking of a number from 1 to 100</p>
+<div class="row"><input id="num" type="number" min="1" placeholder="?"><button id="try">guess</button></div>
+<p class="note">tries left: <b id="left">10</b></p>
+<button id="again" class="ghost">new game</button></div><script>const MAX=20, TRIES=6;
+const num=document.getElementById("num"),msg=document.getElementById("msg"),leftEl=document.getElementById("left");
+let secret,tries;
+function start(){
+  secret=Math.floor(Math.random()*MAX)+1;tries=TRIES;
+  leftEl.textContent=tries;num.value="";num.disabled=false;
+  msg.textContent="I'm thinking of a number from 1 to "+MAX;
+}
+document.getElementById("try").onclick=()=>{
+  const g=Number(num.value);
+  if(!g||tries<=0||num.disabled)return;
+  tries--;leftEl.textContent=tries;
+  if(g===secret){msg.textContent="Yes! It was "+secret+"! ♥";num.disabled=true}
+  else if(tries===0){msg.textContent="Out of tries! It was "+secret;num.disabled=true}
+  else msg.textContent=g>secret?g+" is too high! Try lower":g+" is too low! Try higher";
+  num.value="";num.focus();
+};
+num.onkeydown=e=>{if(e.key==="Enter")document.getElementById("try").click()};
+document.getElementById("again").onclick=start;start();
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>

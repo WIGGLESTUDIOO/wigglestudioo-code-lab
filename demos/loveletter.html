@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width">
+  <title>A Letter For You</title>
+  <link rel="stylesheet" href=
+  "https://fonts.googleapis.com/css?family=Caveat">
+  <style>
+:root {
+  --pink: #ffb3cb;
+  --rose: #ff85ab;
+  --berry: #c2255c;
+  --paper: #fffdf7;
+}
+* { box-sizing: border-box; margin: 0; }
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: linear-gradient(#ffd6e5, #ffe9d6);
+  min-height: 100vh;
+  color: #6b4256;
+}
+
+.stage {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 50px;
+  padding-top: 120px;
+}
+
+.to {
+  font: 60px Caveat, cursive;
+  color: var(--berry);
+}
+#open {
+  background: var(--berry);
+  color: #fff;
+  border: 0;
+  padding: 14px 36px;
+  border-radius: 30px;
+  font-size: 18px;
+  cursor: pointer;
+}
+#open:hover { background: var(--rose); }
+
+.envelope {
+  position: relative;
+  width: 360px;
+  height: 240px;
+  background: var(--pink);
+  border-radius: 8px;
+  box-shadow: 0 16px 36px #c2255c40;
+}
+
+.pocket {
+  position: absolute;
+  inset: 0;
+  background: #ff9ec0;
+  border-radius: 8px;
+  clip-path: polygon(0 0, 50% 55%, 100% 0,
+    100% 100%, 0 100%);
+  z-index: 2;
+}
+.flap {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 60%;
+  background: var(--rose);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top;
+  z-index: 3;
+}
+
+.letter {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 14px;
+  height: 210px;
+  background: var(--paper);
+  border-radius: 6px;
+  padding: 24px 20px;
+  z-index: 1;
+}
+#text { font: 26px/1.3 Caveat, cursive; }
+
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-radius: 50%;
+  background: var(--berry);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  z-index: 4;
+}
+
+.flap { transition: transform .6s; }
+.seal { transition: opacity .3s; }
+
+.open .flap {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+.open .seal { opacity: 0; }
+
+.letter { transition: transform .9s .5s; }
+
+.open .letter {
+  transform: translateY(-190px) scale(1.15);
+}
+.to { transition: opacity .5s; }
+.stage:has(.open) .to { opacity: 0; }
+
+.petal {
+  position: fixed;
+  top: -40px;
+  color: var(--rose);
+  animation: fall linear forwards;
+  pointer-events: none;
+}
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+  }
+}
+
+#text::after {
+  content: "|";
+  animation: blink 1s infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.seal { animation: beat 1.4s infinite; }
+@keyframes beat {
+  50% { transform: scale(1.15); }
+}
+
+</style>
+  <script>
+window.addEventListener("DOMContentLoaded",()=>{
+const env = document.getElementById("env");
+const btn = document.getElementById("open");
+
+btn.onclick = () => {
+  env.classList.add("open");
+  btn.style.display = "none";
+  setTimeout(type, 1400);
+};
+
+const text = document.getElementById("text");
+const msg = [
+  "Thank you for being you.",
+  "You make ordinary days feel",
+  "like tiny celebrations.",
+  "Never forget how loved you are."
+].join(" ");
+
+let i = 0;
+function type() {
+  text.textContent = msg.slice(0, ++i);
+  if (i < msg.length) setTimeout(type, 55);
+}
+
+const to = new URLSearchParams(location.search)
+  .get("to");
+
+if (to) {
+  document.getElementById("to").textContent =
+    "A letter for " + to;
+}
+
+function petal() {
+  const p = document.createElement("div");
+  const r = Math.random();
+  p.className = "petal";
+  p.textContent = "\u2665";
+  p.style.left = r * 100 + "vw";
+  p.style.fontSize = 14 + r * 18 + "px";
+  p.style.animationDuration = 4 + r * 4 + "s";
+  document.body.append(p);
+  setTimeout(() => p.remove(), 8000);
+}
+setInterval(petal, 350);
+
+});
+</script>
+</head>
+<body>
+  <main class="stage">
+    <h1 class="to" id="to">A letter for you</h1>
+    <div class="envelope" id="env">
+      <div class="flap"></div>
+      <div class="letter">
+        <p id="text"></p>
+      </div>
+      <div class="pocket"></div>
+      <div class="seal">&#9829;</div>
+    </div>
+    <button id="open">Open it</button>
+  </main>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WiggleStudioo - Tic Tac Toe</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+.note{margin:0;font-size:13px;font-weight:700;opacity:.75}
+button{font:inherit;font-weight:700;color:#fff;background:#ff8fb1;border:none;border-radius:20px;padding:9px 22px;cursor:pointer;box-shadow:0 6px 14px rgba(255,143,177,.45)}
+button.ghost{background:#fff;color:#e0668f;box-shadow:0 0 0 2px #ffc2d4 inset}
+h2{margin:0;font-size:30px}
+.cell{width:92px;height:92px;border-radius:18px;background:#fff;box-shadow:0 6px 14px rgba(255,143,177,.3),0 0 0 3px #ffd6e3 inset;display:grid;place-items:center;font-size:44px;cursor:pointer;color:#e0668f;transition:transform .15s,background .3s}
+#board{display:grid;grid-template-columns:repeat(3,92px);gap:8px}
+.cell:hover{transform:scale(1.06)}
+.cell.win{background:#ffc9db}
+</style></head><body><div id="stage"><h2 class="pacifico">Tic Tac Toe</h2>
+<p id="msg" class="note">♥ goes first</p>
+<div id="board">
+ <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+ <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+ <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+</div>
+<button id="again" class="ghost">play again</button></div><script>const P1="☀", P2="☾";
+const cells=[...document.querySelectorAll(".cell")],msg=document.getElementById("msg");
+const LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+let board=Array(9).fill(""),turn=P1,over=false;
+msg.textContent=P1+" goes first";
+cells.forEach((c,i)=>c.onclick=()=>{
+  if(board[i]||over)return;
+  board[i]=turn;c.textContent=turn;
+  const w=LINES.find(l=>l.every(k=>board[k]===turn));
+  if(w){w.forEach(k=>cells[k].classList.add("win"));msg.textContent=turn+" wins!";over=true;return}
+  if(board.every(Boolean)){msg.textContent="It's a draw!";over=true;return}
+  turn=turn===P1?P2:P1;msg.textContent=turn+" turn";
+});
+document.getElementById("again").onclick=()=>{board.fill("");cells.forEach(c=>{c.textContent="";c.classList.remove("win")});turn=P1;over=false;msg.textContent=P1+" goes first"};
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>

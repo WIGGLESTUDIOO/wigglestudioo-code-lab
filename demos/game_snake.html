@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>WiggleStudioo - Snake</title><link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@500;700&display=swap" rel="stylesheet"><style>html,body{margin:0;height:100%}#stage{position:relative;width:100%;height:100vh;overflow:hidden}</style><style>*{box-sizing:border-box}
+#stage{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;font-family:'Quicksand',sans-serif;color:#7a3b52;text-align:center;background:radial-gradient(circle at 20% 15%,#ffe3ec,transparent 45%),radial-gradient(circle at 85% 85%,#ffe9d9,transparent 45%),#fff0f4}
+.hbg{position:absolute;bottom:-40px;color:#ff8fb1;opacity:.5;animation:rise linear infinite;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+.pacifico{font-family:'Pacifico',cursive;font-weight:400;color:#e0668f}
+.note{margin:0;font-size:13px;font-weight:700;opacity:.75}
+button{font:inherit;font-weight:700;color:#fff;background:#ff8fb1;border:none;border-radius:20px;padding:9px 22px;cursor:pointer;box-shadow:0 6px 14px rgba(255,143,177,.45)}
+button.ghost{background:#fff;color:#e0668f;box-shadow:0 0 0 2px #ffc2d4 inset}
+h2{margin:0;font-size:30px}
+canvas{background:#fff;border-radius:18px;box-shadow:0 8px 20px rgba(255,143,177,.35),0 0 0 4px #ffd6e3 inset}
+</style></head><body><div id="stage"><h2 class="pacifico">Snake</h2>
+<p class="note">score: <b id="score">0</b> · use the arrow keys</p>
+<canvas id="c" width="320" height="320"></canvas>
+<p id="msg" class="note">press an arrow key to start</p></div><script>const SPEED=90, COLOR="#a98bff";
+const cv=document.getElementById("c"),ctx=cv.getContext("2d"),N=16,SZ=20;
+const scoreEl=document.getElementById("score"),msg=document.getElementById("msg");
+const KEYS={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};
+let snake,dir,last,food,score,timer=null,over=false;
+function reset(){
+  snake=[{x:8,y:8},{x:7,y:8},{x:6,y:8}];dir={x:1,y:0};last=dir;score=0;over=false;
+  scoreEl.textContent=0;msg.textContent="press an arrow key to start";placeFood();draw();
+}
+function placeFood(){
+  do{food={x:Math.floor(Math.random()*N),y:Math.floor(Math.random()*N)}}
+  while(snake.some(s=>s.x===food.x&&s.y===food.y));
+}
+function step(){
+  last=dir;
+  const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+  if(head.x<0||head.y<0||head.x>=N||head.y>=N||snake.some(s=>s.x===head.x&&s.y===head.y)){
+    clearInterval(timer);timer=null;over=true;msg.textContent="Game over! press an arrow to play again";return;
+  }
+  snake.unshift(head);
+  if(head.x===food.x&&head.y===food.y){scoreEl.textContent=++score;placeFood()}else snake.pop();
+  draw();
+}
+function draw(){
+  ctx.clearRect(0,0,320,320);
+  ctx.fillStyle="#ff5f8f";ctx.font="18px sans-serif";ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("♥",food.x*SZ+10,food.y*SZ+11);
+  snake.forEach((s,i)=>{ctx.fillStyle=i?COLOR:"#e0668f";ctx.beginPath();ctx.roundRect(s.x*SZ+1,s.y*SZ+1,SZ-2,SZ-2,6);ctx.fill()});
+}
+addEventListener("keydown",e=>{
+  const d=KEYS[e.key];if(!d)return;e.preventDefault();
+  if(over)reset();
+  if(d.x===-last.x&&d.y===-last.y)return;
+  dir=d;
+  if(!timer){timer=setInterval(step,SPEED);msg.textContent="\u00a0"}
+});
+reset();
+const S=document.getElementById("stage");
+function bgHeart(){const h=document.createElement("div");h.className="hbg";h.textContent="♥";h.style.left=Math.random()*100+"%";h.style.fontSize=(12+Math.random()*22)+"px";h.style.animationDuration=(5+Math.random()*5)+"s";S.appendChild(h);setTimeout(()=>h.remove(),10500)}
+for(let i=0;i<10;i++)setTimeout(bgHeart,i*300);setInterval(bgHeart,650);
+</script></body></html>
