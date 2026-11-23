@@ -42,6 +42,19 @@ GROUPS = [
   dict(id="card_scratch", emoji="🎟️", title="Scratch Card", desc="Scratch with your finger to reveal a message.", tags=["HTML","CSS","JS"], video=""),
   dict(id="card_birthday", emoji="🎂", title="Birthday Card", desc="Blow out the candle and make a wish. Change the name in the code!", tags=["HTML","CSS","JS"], video=S("F4_pMBwtmSM")),
  ]),
+ dict(title="5 Cute Mini Games", emoji="🎮", desc="Long video: five little games with HTML, CSS and JavaScript. Play them right here!", video="", short="", zip="downloads/cute_mini_games_code.zip", items=[
+  dict(id="game_ttt", emoji="⭕", title="Tic Tac Toe", desc="Play against a friend. Hearts and stars instead of X and O.", tags=["HTML","CSS","JS"], video=""),
+  dict(id="game_memory", emoji="🃏", title="Memory Match", desc="Flip the cards and find the pairs.", tags=["HTML","CSS","JS"], video=""),
+  dict(id="game_mole", emoji="🔨", title="Whack-a-Mole", desc="Tap the moles before they hide.", tags=["HTML","CSS","JS"], video=""),
+  dict(id="game_guess", emoji="🔢", title="Guess the Number", desc="Higher or lower? Find the secret number.", tags=["HTML","CSS","JS"], video=""),
+  dict(id="game_snake", emoji="🐍", title="Snake", desc="Eat the apples and do not hit the wall. Use arrow keys.", tags=["HTML","CSS","JS"], video=""),
+ ]),
+ dict(title="Cute Bakery Website", emoji="🧁", desc="Long video: build a whole bakery website from an empty folder, with a working cart counter.", video="", short="", zip="downloads/bakery_website_code.zip", items=[
+  dict(title="Cute Bakery Website", emoji="🧁", desc="3 files plus pictures: index.html, style.css, script.js, img folder.", tags=["HTML","CSS","JS"], img="img/bakery.jpg", zip="downloads/bakery_website_code.zip", video=""),
+ ]),
+ dict(title="Love Letter That Types Itself", emoji="💌", desc="Long video: an envelope made with CSS opens and the letter types itself. Add ?to=YourName to the link!", video="", short="", zip="downloads/love_letter_code.zip", items=[
+  dict(id="loveletter", emoji="💌", title="Love Letter", desc="Press Open. The envelope opens, the message types, hearts fall.", tags=["HTML","CSS","JS"], video=""),
+ ]),
  dict(title="Python Art", emoji="🐍", desc="Long video: can you guess what this code draws? Run it yourself and see all the pictures.", video="", short="", zip="", items=[
   dict(id="guess_the_code", file="downloads/guess_the_code.py", emoji="🐍", title="Can You Guess What This Code Draws?", desc="11 drawings in one file: circle, spiral, flower, stars, waves, mandala, tree, snowflake, galaxy, lightning, aurora. Needs: pip install pillow numpy", tags=["Python"], img="img/guess_the_code.jpg", dl="downloads/guess_the_code.py", video=""),
  ]),
