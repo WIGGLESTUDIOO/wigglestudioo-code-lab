@@ -18,7 +18,7 @@ function buildCard(item, key) {
   el.dataset.tags = item.tags.join(" ");
   const preview = item.img
     ? `<img src="${item.img}" alt="${item.title}">`
-    : `<iframe src="demos/${item.id}.html" title="${item.title}"></iframe>`;
+    : `<iframe loading="lazy" src="demos/${item.id}.html" title="${item.title}"></iframe>`;
   let btns;
   if (item.premium) btns = `<a class="btn main" href="${item.buy}" target="_blank" rel="noopener">Buy</a>`;
   else if (item.code) { byId[key] = item.code; btns = `<button class="btn main" data-copy="${key}">Copy code</button><a class="btn" href="${item.dl}" download>Download</a>`; }
@@ -27,15 +27,69 @@ function buildCard(item, key) {
   el.innerHTML = `${item.emoji ? `<span class="sticker">${item.emoji}</span>` : ""}<div class="frame">${preview}</div><div class="body"><h3>${item.title}</h3><p>${item.desc}</p>${tagsHTML(item)}<div class="btns">${btns}</div></div>`;
   return el;
 }
-SITE.groups.forEach((g, gi) => {
+const SHORT_G = ["Little components", "Python Art"];
+let curFilter = "All";
+const matches = (tags, name) => name === "All" || tags.includes(name);
+
+function railBlock(id, title, sub, cls) {
   const sec = document.createElement("section");
-  sec.className = "group";
-  const gb = (g.zip ? `<a class="btn main" href="${g.zip}" download>Download all (zip)</a>` : "") + vBtn(g.video, "Watch the video") + vBtn(g.short, "Watch the Short");
-  sec.innerHTML = `<div class="ghead"><div><h2>${g.title} ${g.emoji}</h2><p>${g.desc}</p></div><div class="gbtns">${gb}</div></div><div class="grid"></div>`;
-  const grid = sec.querySelector(".grid");
-  g.items.forEach((it, i) => grid.appendChild(buildCard(it, gi + "_" + i)));
+  sec.className = "block"; sec.id = id;
+  sec.innerHTML = `<div class="bhead"><div><h2>${title}</h2><p>${sub}</p></div>
+    <div class="bctl"><button class="arrow" data-dir="-1" aria-label="Scroll left">‹</button><button class="arrow" data-dir="1" aria-label="Scroll right">›</button>
+    <button class="btn seeall">See all <span>›</span></button></div></div><div class="rail ${cls}"></div>`;
+  const rail = sec.querySelector(".rail");
+  sec.querySelectorAll(".arrow").forEach(b => b.onclick = () => rail.scrollBy({ left: b.dataset.dir * rail.clientWidth * .8, behavior: "smooth" }));
+  const all = sec.querySelector(".seeall");
+  all.onclick = () => {
+    const w = rail.classList.toggle("wrap");
+    sec.classList.toggle("open", w);
+    all.innerHTML = w ? "Show less <span>‹</span>" : "See all <span>›</span>";
+    fit();
+  };
   root.appendChild(sec);
+  return { sec, rail };
+}
+
+// Long videos: one tile per video, tap to open its code below
+const L = railBlock("longBlock", "🎬 Long video code", "Full step-by-step tutorials. Tap a video to see all its code.", "tiles");
+const panel = document.createElement("div"); panel.className = "panel"; L.sec.appendChild(panel);
+let openGi = -1;
+function openGroup(gi, tile) {
+  const g = SITE.groups[gi];
+  L.rail.querySelectorAll(".tile").forEach(t => t.classList.remove("on"));
+  if (openGi === gi) { panel.innerHTML = ""; openGi = -1; return; }
+  openGi = gi; tile.classList.add("on");
+  const gb = (g.zip ? `<a class="btn main" href="${g.zip}" download>Download all (zip)</a>` : "") + vBtn(g.video, "Watch the video") + vBtn(g.short, "Watch the Short");
+  panel.innerHTML = `<div class="ghead"><div><h2>${g.title} ${g.emoji}</h2><p>${g.desc}</p></div><div class="gbtns">${gb}<button class="btn" id="closeP">Close ✕</button></div></div><div class="grid"></div>`;
+  const grid = panel.querySelector(".grid");
+  g.items.forEach((it, i) => grid.appendChild(buildCard(it, gi + "_" + i)));
+  panel.querySelector("#closeP").onclick = () => { panel.innerHTML = ""; openGi = -1; tile.classList.remove("on"); };
+  applyFilter(curFilter); fit();
+  panel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+SITE.groups.forEach((g, gi) => {
+  if (SHORT_G.includes(g.title)) return;
+  const t = document.createElement("button");
+  t.className = "tile"; t.dataset.tags = [...new Set(g.items.flatMap(i => i.tags))].join(" ");
+  t.innerHTML = `<span class="te">${g.emoji}</span><b>${g.title}</b><small>${g.items.length} ${g.items.length === 1 ? "project" : "pieces of code"}</small>`;
+  t.onclick = () => openGroup(gi, t);
+  L.rail.appendChild(t);
 });
+
+// Shorts: a row of small cards
+const S = railBlock("shortBlock", "📱 Shorts code", "Quick little pieces from my Shorts. Copy, paste, done.", "cards");
+SITE.groups.forEach((g, gi) => {
+  if (!SHORT_G.includes(g.title)) return;
+  g.items.forEach((it, i) => S.rail.appendChild(buildCard(it, gi + "_" + i)));
+});
+
+function applyFilter(name) {
+  curFilter = name;
+  document.querySelectorAll(".card").forEach(c => { c.style.display = matches(c.dataset.tags.split(" "), name) ? "" : "none"; });
+  document.querySelectorAll(".tile").forEach(t => { t.style.display = matches(t.dataset.tags.split(" "), name) ? "" : "none"; });
+  L.sec.style.display = [...L.rail.children].some(t => t.style.display !== "none") ? "" : "none";
+  S.sec.style.display = [...S.rail.children].some(t => t.style.display !== "none") ? "" : "none";
+}
 
 function fit() {
   document.querySelectorAll(".frame iframe").forEach(f => {
@@ -72,15 +126,7 @@ const chips = document.getElementById("chips");
   c.className = "chip" + (i === 0 ? " on" : ""); c.textContent = name;
   c.onclick = () => {
     chips.querySelectorAll(".chip").forEach(x => x.classList.remove("on")); c.classList.add("on");
-    document.querySelectorAll(".group").forEach(sec => {
-      let any = false;
-      sec.querySelectorAll(".card").forEach(card => {
-        const show = name === "All" || card.dataset.tags.split(" ").includes(name);
-        card.style.display = show ? "" : "none"; if (show) any = true;
-      });
-      sec.style.display = any ? "" : "none";
-    });
-    fit();
+    applyFilter(name); fit();
   };
   chips.appendChild(c);
 });
