@@ -55,6 +55,9 @@ GROUPS = [
  dict(title="Love Letter That Types Itself", emoji="💌", desc="Long video: an envelope made with CSS opens and the letter types itself. Add ?to=YourName to the link!", video="", short="", zip="downloads/love_letter_code.zip", items=[
   dict(id="loveletter", emoji="💌", title="Love Letter", desc="Press Open. The envelope opens, the message types, hearts fall.", tags=["HTML","CSS","JS"], video=""),
  ]),
+ dict(title="Cute Photo Booth", emoji="📸", desc="Long video: a photo booth in your browser with a live camera, countdown, stickers, flash and a saveable photo strip.", video="", short="", zip="downloads/photo_booth_code.zip", items=[
+  dict(title="Cute Photo Booth", emoji="📸", desc="3 files: index.html, style.css, script.js. Needs a camera and https or localhost.", tags=["HTML","CSS","JS"], img="img/photobooth.jpg", zip="downloads/photo_booth_code.zip", video=""),
+ ]),
  dict(title="Python Art", emoji="🐍", desc="Long video: can you guess what this code draws? Run it yourself and see all the pictures.", video="", short="", zip="", items=[
   dict(id="guess_the_code", file="downloads/guess_the_code.py", emoji="🐍", title="Can You Guess What This Code Draws?", desc="11 drawings in one file: circle, spiral, flower, stars, waves, mandala, tree, snowflake, galaxy, lightning, aurora. Needs: pip install pillow numpy", tags=["Python"], img="img/guess_the_code.jpg", dl="downloads/guess_the_code.py", video=""),
  ]),
